@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,7 +21,8 @@ namespace FinancialDatabase
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            // Make default selection "Item"
+            comboBox1.SelectedIndex = 0;
         }
 
         // Remove escape characters
@@ -53,7 +55,8 @@ namespace FinancialDatabase
 
         private void button1_Click(object sender, EventArgs e)
         {
-            const string DEFAULTQUERY = "SELECT * FROM city where ID < 5";
+            this.listBox1.Items.Clear();
+            const string DEFAULTQUERY = "SELECT * FROM item;";
 
             // Activate Python Script 'DtbConnAndQuery.py' as process 'p'
             string query = this.textBox1.Text;
@@ -64,9 +67,8 @@ namespace FinancialDatabase
 
             query = formatQuery(query);
 
-            Console.WriteLine(query);
-            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\DtbConnAndQuery.py " + query;
-            Console.WriteLine(cmdText);
+            //Console.WriteLine(query);
+            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DtbConnAndQuery.py " + query;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             
             p.StartInfo.UseShellExecute = false;
@@ -77,17 +79,16 @@ namespace FinancialDatabase
             
 
             // Show redirected output of process 'p's standard output
-            String s   = p.StandardOutput.ReadLine();
-            String eos = "EOS";     // end-of-stream
+            string s   = p.StandardOutput.ReadLine();
+            string eos = "EOS";     // end-of-stream
             
             // Until end of stream is shown, keep writing the next line to the console, and adding it to the listBox1
+
             while(s.CompareTo(eos) != 0)
             {                 
-
                 Console.WriteLine(s);
                 this.listBox1.Items.Add(s);
                 s = p.StandardOutput.ReadLine();
-
             }
 
             // End process 'p'
@@ -98,6 +99,118 @@ namespace FinancialDatabase
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        // Search Button in Query Tab
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.listBox1.Items.Clear();
+            string search = searchBox.Text;
+            List <string> result = runSearch(search);
+            for (int i = 0; i < result.Count; i++)
+            {
+                this.listBox1.Items.Add(result[i]);
+            }
+        }
+
+        private List<string> runIndividualSearch(string term)
+        {
+            string query;
+
+            if (term.CompareTo("") == 0){
+                query = "SELECT * FROM item;";
+            }else            {
+                query = "SELECT * FROM item WHERE name LIKE '%" + term + "%';";
+            }
+
+
+            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DtbConnAndQuery.py " + query;
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.FileName = "CMD.exe";
+            p.StartInfo.Arguments = cmdText;
+            p.Start();
+
+
+            // Show redirected output of process 'p's standard output
+            string s = p.StandardOutput.ReadLine();
+            string eos = "EOS";     // end-of-stream
+            List<string> retArr = new List<string>();
+            // Until end of stream is shown, keep writing the next line to the console, and adding it to the listBox1
+            while (s.CompareTo(eos) != 0)
+            {
+                Console.WriteLine(s);
+                retArr.Add(s);
+                s = p.StandardOutput.ReadLine();
+            }
+
+            // End process 'p'
+            try
+            {
+                p.Kill();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return retArr;
+        }
+
+
+        
+        private List<string> runSearch(string search)
+        {
+            if (search.CompareTo("") == 0)
+            {
+                
+            }
+            string[] terms = search.Split(' ');
+
+            List<string> items = new List<string>();
+            List<int>    hits  = new List<int>();
+            List<Tuple<int,string>> combined = new List<Tuple<int, string>>();
+
+            for(int i = 0; i < terms.Count(); i++)
+            {
+                Console.WriteLine(terms[i]);
+                List <string> result = runIndividualSearch(terms[i]);
+                for (int j = 0; j < result.Count; j++)
+                {
+                    if (!items.Contains(result[j]))
+                    {
+                        items.Add(result[j]);
+                        hits.Add(1);
+                    }
+                    else
+                    {
+                        int index = items.IndexOf(result[j]);
+                        hits[index]++;
+                    }
+                }
+            }
+
+            for(int i = 0; i < items.Count(); i++)
+            {
+                combined.Add(new Tuple<int, string>(hits[i], items[i]));
+            }
+            combined.Sort(delegate (Tuple<int,string>a, Tuple<int, string> b)
+            {
+                return b.Item1 - a.Item1;
+            });
+            for (int i = 0; i < items.Count(); i++)
+            {
+                items[i] = combined[i].Item2;
+            }
+
+
+            return items;
         }
     }
 }

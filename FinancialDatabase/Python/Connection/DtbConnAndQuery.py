@@ -28,6 +28,9 @@ def getQuery():
 	return query
 
 
+def search():
+	return
+
 def runQuery(query):
 	#print(query)
 	# user: testuser, pass: testuser
@@ -35,6 +38,7 @@ def runQuery(query):
 	cnx.autocommit=True
 	cursor = cnx.cursor()
 	cnx.rollback()
+	result = None
 	try:
 		result = cursor.execute(query) ## TRY: Finding source code for commit(), restarting a database connection project, creating new database user
 		result = [result, cursor.fetchall()]
@@ -44,13 +48,29 @@ def runQuery(query):
 			print("Error: Unread Result")
 		retStr = ""
 		if result is not None:
-			retstr = str(result)
+			retStr = str(result)
 		cursor.close()
 		cnx.close()
 	except:
 		global errorCount
 		errorCount += 1
-		print("!!!ERROR!!!")
-		print(query)
-		retStr = "!!!ERROR!!!"
-	return retStr, cursor.lastrowid
+		print("!!!ERROR!!!", file=sys.stderr)
+		print(query, file=sys.stderr)
+		print("", file=sys.stdout)
+		return ["ERROR","ERROR"], [-1]
+	return result, cursor.lastrowid
+
+
+result, empty = runQuery(getQuery())
+
+if (result[1] != None):
+	if result[1] == "ERROR":
+		print(result[1])
+	else:
+		for row in result[1]:
+			print(row)
+print("EOS")
+
+#cursor.close()
+
+#cnx.close()
