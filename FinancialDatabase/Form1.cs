@@ -111,23 +111,47 @@ namespace FinancialDatabase
         {
             this.listBox1.Items.Clear();
             string search = searchBox.Text;
-            List <string> result = runSearch(search);
+            DateTime startDateRaw = dateTimePicker1.Value;
+            DateTime endDateRaw   = dateTimePicker2.Value;
+            bool inStock = checkBox1.Checked;
+            bool soldOut = checkBox2.Checked;
+
+            string startDate = startDateRaw.Year.ToString() + "-" + startDateRaw.Month.ToString() + "-" + startDateRaw.Day.ToString();
+            string endDate   = endDateRaw.Year.ToString()   + "-" + endDateRaw.Month.ToString()   + "-" + endDateRaw.Day.ToString();
+
+            List <string> result = runSearch(search, startDate, endDate, inStock, soldOut);
             for (int i = 0; i < result.Count; i++)
             {
                 this.listBox1.Items.Add(result[i]);
             }
         }
 
-        private List<string> runIndividualSearch(string term)
+        private List<string> runIndividualSearch(string term, string startDate, string endDate, bool isInStock, bool isSoldOut)
         {
             string query;
+            string stock = "";
+            string soldOut;
 
+            // If both are true, don't need to add to query since it's looking for all cases of the current quantity
+            if (isInStock && !isSoldOut)
+            {
+                stock = " AND item.CurrentQuantity ^> 0 ";
+            }
+            else if (!isInStock && isSoldOut)
+            {
+                stock = " AND item.CurrentQuantity = 0 ";
+
+                // Special case of stupid user looking for no items. Make query fail so no items show up
+            } else if (!isInStock && !isSoldOut)
+            {
+                stock = " AND item.CurrentQuantity ^< 0 ";
+            }
+            // NOTE: '^' is a special defined escape character removed in the python script so CMD doesn't assume '>' means pipe command
             if (term.CompareTo("") == 0){
                 query = "SELECT * FROM item;";
-            }else            {
-                query = "SELECT * FROM item WHERE name LIKE '%" + term + "%';";
+            } else {
+                query = "SELECT * FROM item JOIN purchase ON item.ITEM_ID = purchase.ItemID WHERE name LIKE '%" + term + "%' AND purchase.Date_Purchased ^> '" + startDate + "' AND purchase.Date_Purchased ^< '" + endDate + "' " + stock + ";";
             }
-
 
             string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DCQControl.py " + query;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
@@ -135,7 +159,8 @@ namespace FinancialDatabase
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.FileName = "CMD.exe";
-            p.StartInfo.Arguments = cmdText;
+            p.StartInfo.Arguments =  cmdText;
+            Console.WriteLine(cmdText);
             p.Start();
 
 
@@ -165,7 +190,7 @@ namespace FinancialDatabase
 
 
         
-        private List<string> runSearch(string search)
+        private List<string> runSearch(string search, string startDate, string endDate, bool inStock, bool soldOut)
         {
             if (search.CompareTo("") == 0)
             {
@@ -180,7 +205,7 @@ namespace FinancialDatabase
             for(int i = 0; i < terms.Count(); i++)
             {
                 Console.WriteLine(terms[i]);
-                List <string> result = runIndividualSearch(terms[i]);
+                List <string> result = runIndividualSearch(terms[i], startDate, endDate, inStock, soldOut);
                 for (int j = 0; j < result.Count; j++)
                 {
                     if (!items.Contains(result[j]))

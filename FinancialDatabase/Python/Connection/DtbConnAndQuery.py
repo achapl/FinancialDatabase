@@ -1,5 +1,5 @@
 import mysql.connector
-
+import sys
 
 
 errorCount = 0
@@ -10,7 +10,6 @@ def search():
 	return
 
 def runQuery(query):
-	#print(query)
 	# user: testuser, pass: testuser
 	cnx = mysql.connector.connect(user='testuser', password='testuser', host='127.0.0.1', database='tool_database')
 	cnx.autocommit=True
