@@ -229,10 +229,16 @@ namespace FinancialDatabase
             {
                 return b.Item1 - a.Item1;
             });
+            int largestIndex = 0;
             for (int i = 0; i < items.Count(); i++)
             {
-                items[i] = combined[i].Item2;
+                // Only return items where all terms matched
+                if (combined[i].Item1 == terms.Count()) {
+                    items[largestIndex++] = combined[i].Item2;
+                }
             }
+            // Clear rest of items with <1 matches
+            items.RemoveRange(largestIndex, items.Count() - largestIndex);
 
 
             return items;
