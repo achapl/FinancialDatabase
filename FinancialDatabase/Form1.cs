@@ -113,24 +113,51 @@ namespace FinancialDatabase
             string search = searchBox.Text;
             DateTime startDateRaw = dateTimePicker1.Value;
             DateTime endDateRaw   = dateTimePicker2.Value;
-            bool inStock = checkBox1.Checked;
-            bool soldOut = checkBox2.Checked;
+            bool inStock  = checkBox1.Checked;
+            bool soldOut  = checkBox2.Checked;
+            bool dateCol  = checkBox3.Checked;
+            bool nameCol  = checkBox4.Checked;
+            bool priceCol = checkBox5.Checked;
 
             string startDate = startDateRaw.Year.ToString() + "-" + startDateRaw.Month.ToString() + "-" + startDateRaw.Day.ToString();
             string endDate   = endDateRaw.Year.ToString()   + "-" + endDateRaw.Month.ToString()   + "-" + endDateRaw.Day.ToString();
 
-            List <string> result = runSearch(search, startDate, endDate, inStock, soldOut);
+            Console.WriteLine(dateCol);
+            Console.WriteLine(nameCol);
+            Console.WriteLine(priceCol);
+
+            List <string> result = runSearch(search, startDate, endDate, inStock, soldOut, dateCol, nameCol, priceCol);
             for (int i = 0; i < result.Count; i++)
             {
                 this.listBox1.Items.Add(result[i]);
             }
         }
 
-        private List<string> runIndividualSearch(string term, string startDate, string endDate, bool isInStock, bool isSoldOut)
+        private List<string> runIndividualSearch(string term, string startDate, string endDate, bool isInStock, bool isSoldOut, bool dateCol, bool nameCol, bool priceCol)
         {
             string query;
             string stock = "";
-            string soldOut;
+            string dateColText  = "";
+            string nameColText  = "";
+            string priceColText = "";
+            int i = 0;
+            List<string> columns = new List<string>();
+            string cols;
+
+            //if (Col) { columns[i++] = ""; }
+            if (dateCol)  { columns.Add("purchase.Date_Purchased"); }
+            if (nameCol)  { columns.Add("item.Name"); }
+            if (priceCol) { columns.Add("purchase.Amount"); }
+
+            // No columns selected, return empty search
+            if (columns.Count() == 0)
+            {
+                return new List<string>(0);
+            }
+            cols = String.Join(", ", columns);
+            Console.WriteLine(columns);
+            Console.WriteLine(cols);
+
 
             // If both are true, don't need to add to query since it's looking for all cases of the current quantity
             if (isInStock && !isSoldOut)
@@ -150,7 +177,7 @@ namespace FinancialDatabase
             if (term.CompareTo("") == 0){
                 query = "SELECT * FROM item;";
             } else {
-                query = "SELECT * FROM item JOIN purchase ON item.ITEM_ID = purchase.ItemID WHERE name LIKE '%" + term + "%' AND purchase.Date_Purchased ^> '" + startDate + "' AND purchase.Date_Purchased ^< '" + endDate + "' " + stock + ";";
+                query = "SELECT " + cols + " FROM item JOIN purchase ON item.ITEM_ID = purchase.ItemID WHERE name LIKE '%" + term + "%' AND purchase.Date_Purchased ^> '" + startDate + "' AND purchase.Date_Purchased ^< '" + endDate + "' " + stock + ";";
             }
 
             string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DCQControl.py " + query;
@@ -190,7 +217,7 @@ namespace FinancialDatabase
 
 
         
-        private List<string> runSearch(string search, string startDate, string endDate, bool inStock, bool soldOut)
+        private List<string> runSearch(string search, string startDate, string endDate, bool inStock, bool soldOut, bool dateCol, bool nameCol, bool priceCol)
         {
             if (search.CompareTo("") == 0)
             {
@@ -205,7 +232,7 @@ namespace FinancialDatabase
             for(int i = 0; i < terms.Count(); i++)
             {
                 Console.WriteLine(terms[i]);
-                List <string> result = runIndividualSearch(terms[i], startDate, endDate, inStock, soldOut);
+                List <string> result = runIndividualSearch(terms[i], startDate, endDate, inStock, soldOut, dateCol, nameCol, priceCol);
                 for (int j = 0; j < result.Count; j++)
                 {
                     if (!items.Contains(result[j]))

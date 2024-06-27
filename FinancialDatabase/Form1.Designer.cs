@@ -33,6 +33,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.QueryTab = new System.Windows.Forms.TabPage();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -42,8 +44,9 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.QueryTab.SuspendLayout();
             this.SuspendLayout();
@@ -61,9 +64,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(473, 34);
+            this.listBox1.Location = new System.Drawing.Point(461, 36);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(686, 394);
+            this.listBox1.Size = new System.Drawing.Size(672, 355);
             this.listBox1.TabIndex = 2;
             // 
             // textBox1
@@ -81,11 +84,15 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(455, 426);
+            this.tabControl1.Size = new System.Drawing.Size(1147, 426);
             this.tabControl1.TabIndex = 5;
             // 
             // QueryTab
             // 
+            this.QueryTab.Controls.Add(this.checkBox5);
+            this.QueryTab.Controls.Add(this.checkBox4);
+            this.QueryTab.Controls.Add(this.checkBox3);
+            this.QueryTab.Controls.Add(this.listBox1);
             this.QueryTab.Controls.Add(this.checkBox2);
             this.QueryTab.Controls.Add(this.checkBox1);
             this.QueryTab.Controls.Add(this.label2);
@@ -101,10 +108,34 @@
             this.QueryTab.Location = new System.Drawing.Point(4, 22);
             this.QueryTab.Name = "QueryTab";
             this.QueryTab.Padding = new System.Windows.Forms.Padding(3);
-            this.QueryTab.Size = new System.Drawing.Size(447, 400);
+            this.QueryTab.Size = new System.Drawing.Size(1139, 400);
             this.QueryTab.TabIndex = 0;
             this.QueryTab.Text = "Query";
             this.QueryTab.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Checked = true;
+            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox2.Location = new System.Drawing.Point(220, 126);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(67, 17);
+            this.checkBox2.TabIndex = 14;
+            this.checkBox2.Text = "Sold Out";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(220, 102);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(66, 17);
+            this.checkBox1.TabIndex = 13;
+            this.checkBox1.Text = "In Stock";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -173,7 +204,7 @@
             // 
             this.menuStrip1.Location = new System.Drawing.Point(3, 3);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(441, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1133, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -182,34 +213,42 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(447, 400);
+            this.tabPage2.Size = new System.Drawing.Size(1151, 400);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // checkBox3
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(220, 102);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(66, 17);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "In Stock";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(461, 11);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(49, 17);
+            this.checkBox3.TabIndex = 15;
+            this.checkBox3.Text = "Date";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBox4
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(220, 126);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(67, 17);
-            this.checkBox2.TabIndex = 14;
-            this.checkBox2.Text = "Sold Out";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = true;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox4.Location = new System.Drawing.Point(516, 11);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(54, 17);
+            this.checkBox4.TabIndex = 16;
+            this.checkBox4.Text = "Name";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(576, 11);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(98, 17);
+            this.checkBox5.TabIndex = 17;
+            this.checkBox5.Text = "Purchase Price";
+            this.checkBox5.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -217,7 +256,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1171, 450);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.listBox1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -246,6 +284,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 
