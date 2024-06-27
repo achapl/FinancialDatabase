@@ -75,6 +75,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Python\Connection\CSVImporter\Tool Buys - Sheet1.csv" />
+    <None Include="Python\Connection\CSVImporter\Tool Buys - Sheet1_FMT.csv" />
+    <None Include="Python\Connection\CSVImporter\Tool Buys - Sheet1_FMT_TESTING.csv" />
+    <None Include="Python\Connection\CSVImporter\__pycache__\InputSpreadsheetIntoDatabase.cpython-311.pyc" />
+    <None Include="Python\Connection\CSVImporter\__pycache__\__init__.cpython-311.pyc" />
+    <None Include="Python\Connection\__pycache__\DtbConnAndQuery.cpython-311.pyc" />
+    <None Include="Python\Connection\__pycache__\__init__.cpython-311.pyc" />
     <None Include="ToolBuys-Sheet1.csv" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +90,14 @@
   <ItemGroup>
     <Content Include="FormatData.py" />
     <Content Include="InputSpreadsheetIntoDatabase.py" />
+    <Content Include="Python\Connection\CSVImporter\FormatData.py" />
+    <Content Include="Python\Connection\CSVImporter\InputSpreadsheetIntoDatabase.py" />
+    <Content Include="Python\Connection\CSVImporter\__init__.py" />
+    <Content Include="Python\Connection\DCQControl.py" />
+    <Content Include="Python\Connection\DtbConnAndQuery.py" />
+    <Content Include="Python\Connection\__init__.py" />
+    <Content Include="Python\ImportCSV.py" />
+    <Content Include="Python\__init__.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

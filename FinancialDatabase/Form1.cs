@@ -68,7 +68,7 @@ namespace FinancialDatabase
             query = formatQuery(query);
 
             //Console.WriteLine(query);
-            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DtbConnAndQuery.py " + query;
+            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DCQControl.py " + query;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             
             p.StartInfo.UseShellExecute = false;
@@ -129,7 +129,7 @@ namespace FinancialDatabase
             }
 
 
-            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DtbConnAndQuery.py " + query;
+            string cmdText = @"/K python C:\Users\Owner\source\repos\FinancialDatabaseSolution\FinancialDatabase\Python\Connection\DCQControl.py " + query;
             System.Diagnostics.Process p = new System.Diagnostics.Process();
 
             p.StartInfo.UseShellExecute = false;
